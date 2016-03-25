@@ -1,0 +1,67 @@
+<html>
+	<head>
+		<title> Delete Posts </title>
+	</head>
+
+	<body> 
+           <form name="myForm" action="DeletePost.php" method="post">
+           <?php
+              $mysqli = new mysqli("mysql.eecs.ku.edu", "jtsai", "thisismysql", "jtsai");
+
+              /* check connection */
+              if ($mysqli->connect_errno) {
+                  printf("Connect failed: %s\n", $mysqli->connect_error);
+                  exit();
+              }
+
+              $query = "SELECT * FROM Posts";
+
+              $result = $mysqli->query($query);
+              if ($result) 
+              {
+                  echo '<table>';
+                  echo '<tr>';
+                  echo '<td>';
+                  printf ("Delete?");
+                  echo '</td>';
+                  echo '<td>';
+                  printf ("Post ID");
+                  echo '</td>';
+                  echo '<td>';
+                  printf("Author ID");
+                  echo '</td>';
+                  echo '<td>';
+                  printf("Content");
+                  echo '</td>';
+                  echo '</tr>';
+          /* fetch associative array */
+                  while ($row = $result->fetch_assoc()) 
+                  {
+                          echo '<tr>';
+                          echo '<td>';
+                          echo '<input type="checkbox" name="deletePost[]" value=' . $row[post_id] . '>';
+                          echo '</td>';
+                          echo '<td>';
+                          printf ($row["post_id"]);
+                          echo '</td>';
+                          echo '<td>';
+                          printf($row["author_id"]);
+                          echo '</td>';
+                          echo '<td>';
+                          printf($row["content"]);
+                          echo '</td>';
+                          echo '</tr>';
+                  }
+
+                
+               echo '</table>';
+
+              }    
+              /* free result set */
+              $result->free();
+
+          ?>
+           <input type="submit">
+          </form>
+	</body>
+</html>
